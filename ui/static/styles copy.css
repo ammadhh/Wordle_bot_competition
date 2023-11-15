@@ -1,45 +1,27 @@
-/* General Styles */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-}
-
-/* Container Styles */
 #top-words-container {
     display: none;
 }
-.username-color {
-    color: rgb(0, 255, 60); /* Blue color, you can change it to any color you like */
-}
-#username-color{
-    color: black; /* Blue color, you can change it to any color you like */
-}
 
 h1, .mode h3, .change-mode, .main-container, .side-container, #stats-container, #top-words-container, #user-stats, #user-list {
-    border: 2px solid #007bff; /* Bright blue border */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border: 1px solid black;
 }
 
 h1, .mode {
-    padding: 10px 20px;
+    padding: 1vh 1vw;
     text-align: center;
-    background-color: #007bff; /* Bright blue background */
-    color: #ffffff; /* White text */
-    font-size: 1.5em;
 }
 
 .mode h3, #curr-mode, .change-mode, .mode select, .mode button, .side-container, .main-container {
     display: inline-block;
-    vertical-align: middle;
 }
 
 .mode h3, .change-mode {
     width: 40vw;
-    padding: 10px 20px;
-    margin: 10px;
+    padding: 1vh 1vw;
+    margin: 5px;
 }
+
+
 
 #game {
     display: flex;
@@ -57,9 +39,7 @@ h1, .mode {
 .main-container, .side-container {
     width: 40vw;
     height: 70vh;
-    margin: 10px;
-    background-color: #fff; /* White background */
-    padding: 20px; /* Padding around the content */
+    margin: 5px;
 }
 
 .disabled {
@@ -72,7 +52,7 @@ h1, .mode {
 
 #if-user-mode *, #not-user-mode * {
     text-align: center;
-    margin: 10px;
+    margin: 5px;
 }
 
 .correct {
@@ -87,25 +67,27 @@ h1, .mode {
     background-color: #000000;
 }
 
-#stats-container, #top-words-container, #user-stats {
+#stats-container, #top-words-container, #user-stats{
     height: 40%;
     text-align: center;
-    background-color: #e9ecef; /* Light gray background */
 }
 
-.mode-stat, .username {
+.mode-stat, .username{
     font-weight: bold;
 }
 
 .stats-line, .user-stats-line {
-    padding: 10px;
-    border: 1px solid #dee2e6; /* Light gray border */
-    margin: 10px;
-    background-color: #f8f9fa; /* Very light gray background */
+    padding: 5px;
+    border: 1px solid black;
+    margin: 5px;
+    text-align: center;
 }
 
-.stats-line span, .user-stats-line span {
-    margin: 10px;
+.stats-line span {
+    margin: 5px;
+}
+.user-stats-line span{
+    margin: 5px;
 }
 
 /* Fix for bouncy grid */
@@ -125,36 +107,30 @@ h1, .mode {
     margin: 5px;
     text-align: center;
     line-height: 50px;
-    font-size: 40px;
-    color:  white;
+    font-size: 30px;
+    color: #ffffff; /* Changed to white */
     grid-column: span 1;
     grid-row: span 1;
 }
 
 /* ListWords */
-#list-words ul, ul {
+#list-words ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-wrap: wrap; /* This allows items to wrap to the next line */
+    gap: 10px; /* This creates some space between the items */
 }
-
-#list-words li {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-}
-.header {
-    width: 100%;
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
     display: flex;
-    align-items: left;
-    padding: 10px;
+    flex-wrap: wrap; /* This allows items to wrap to the next line */
+    gap: 10px; /* This creates some space between the items */
 }
 
-.logo {
-    height: 50px; /* You can adjust this as needed */
-    align-items: left;
-}
+
+/* #list-words li {
+    /* No need for float:left; flexbox will handle the layout */

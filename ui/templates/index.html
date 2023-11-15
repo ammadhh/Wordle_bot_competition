@@ -6,10 +6,14 @@
         <script defer type="text/javascript" src="/static/scripts.js"></script>
     </head>
     <body>
-        <h1>Cracking Wordle</h1>
+        <h1>Cracking Wordle as <a class="username-color"> {{ username }} </a></h1>
         <div class="mode">
             <!--This span is used as an argument when calling the API-->
-            <h3>Current Mode: <span id="curr-mode">user</span></h3>
+            <h3>Current Mode: <span id="curr-mode">user
+                <img src="https://pbs.twimg.com/profile_images/1481448925617864704/gMzS5Kt2_400x400.jpg" alt="Logo" class="logo">
+            </span>
+            </h3>
+            
             <div class="change-mode">
                 <label for="modes">Change the mode: </label>
                 <select name="modes" id="modes">
@@ -28,54 +32,36 @@
                 <!--contains the Wordle clone game with an input box and keyboard with feedback-->
                 <div id="game">
                     <div id="guesses">
-                        <div class="row" id="row-0">
-                            <!--In the form of row,column-->
-                            <div class="letter" id="00"></div>
-                            <div class="letter" id="01"></div>
-                            <div class="letter" id="02"></div>
-                            <div class="letter" id="03"></div>
-                            <div class="letter" id="04"></div>
-                        </div>
-                        <div class="row" id="row-1">
-                            <!--In the form of row,column-->
-                            <div class="letter" id="10"></div>
-                            <div class="letter" id="11"></div>
-                            <div class="letter" id="12"></div>
-                            <div class="letter" id="13"></div>
-                            <div class="letter" id="14"></div>
-                        </div>
-                        <div class="row" id="row-2">
-                            <!--In the form of row,column-->
-                            <div class="letter" id="20"></div>
-                            <div class="letter" id="21"></div>
-                            <div class="letter" id="22"></div>
-                            <div class="letter" id="23"></div>
-                            <div class="letter" id="24"></div>
-                        </div>
-                        <div class="row" id="row-3">
-                            <!--In the form of row,column-->
-                            <div class="letter" id="30"></div>
-                            <div class="letter" id="31"></div>
-                            <div class="letter" id="32"></div>
-                            <div class="letter" id="33"></div>
-                            <div class="letter" id="34"></div>
-                        </div>
-                        <div class="row" id="row-4">
-                            <!--In the form of row,column-->
-                            <div class="letter" id="40"></div>
-                            <div class="letter" id="41"></div>
-                            <div class="letter" id="42"></div>
-                            <div class="letter" id="43"></div>
-                            <div class="letter" id="44"></div>
-                        </div>
-                        <div class="row" id="row-5">
-                            <!--In the form of row,column-->
-                            <div class="letter" id="50"></div>
-                            <div class="letter" id="51"></div>
-                            <div class="letter" id="52"></div>
-                            <div class="letter" id="53"></div>
-                            <div class="letter" id="54"></div>
-                        </div>
+                        <div class="letter" id="00"></div>
+                        <div class="letter" id="01"></div>
+                        <div class="letter" id="02"></div>
+                        <div class="letter" id="03"></div>
+                        <div class="letter" id="04"></div>
+                        <div class="letter" id="10"></div>
+                        <div class="letter" id="11"></div>
+                        <div class="letter" id="12"></div>
+                        <div class="letter" id="13"></div>
+                        <div class="letter" id="14"></div>
+                        <div class="letter" id="20"></div>
+                        <div class="letter" id="21"></div>
+                        <div class="letter" id="22"></div>
+                        <div class="letter" id="23"></div>
+                        <div class="letter" id="24"></div>
+                        <div class="letter" id="30"></div>
+                        <div class="letter" id="31"></div>
+                        <div class="letter" id="32"></div>
+                        <div class="letter" id="33"></div>
+                        <div class="letter" id="34"></div>
+                        <div class="letter" id="40"></div>
+                        <div class="letter" id="41"></div>
+                        <div class="letter" id="42"></div>
+                        <div class="letter" id="43"></div>
+                        <div class="letter" id="44"></div>
+                        <div class="letter" id="50"></div>
+                        <div class="letter" id="51"></div>
+                        <div class="letter" id="52"></div>
+                        <div class="letter" id="53"></div>
+                        <div class="letter" id="54"></div>
                     </div>
 
                     <div id="if-user-mode">
@@ -96,9 +82,23 @@
                 </div>
             </div>
             <div class="side-container">
+                <!--contains the leaderboards of all the different players-->
+                <div id="user-stats">
+                    <h3>Game Statistics</h3>
+                    <div id="user-list">
+                        <!--Jinja templating-->
+                        {% for user in users %}
+                        <div class="user-stats-line" key="{{user.mode}}">
+                            <span class="username">{{user.Username}}</span>
+                            <span class="user-win-rate">Win Rate: {{user.AvgGamesWon}}</span>
+                            <span class="user-avg-guesses">Avg Guesses: {{user.AvgTotalGuesses}}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
                 <!--contains the stats of all the different modes-->
                 <div id="stats-container">
-                    <h3>Game Statistics</h3>
+                    <h3>Game Leaderboards</h3>
                     <div id="stats-list">
                         <!--Jinja templating-->
                         {% for mode in modes %}
@@ -111,13 +111,22 @@
                     </div>
                 </div>
                 <!--contains the top n words with their scores, for modes other than user-->
+                <!--currently hidden in CSS-->
+
                 <div id="top-words-container">
                     <h3>Top Words for Current Guess</h3>
                     <div id="top-words">
                         Not Available
                     </div>
                 </div>
+                <div id="list-words">
+                    <h3>List of Possible Remaining Words</h3>
+                    <div id="list-words">
+                        <ul id="remainingList">
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
-</html>
+</html> 

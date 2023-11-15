@@ -10,6 +10,7 @@ def is_valid_guess(current_guess: str, VALID_GUESSES) -> bool:
 
 # generates feedback for current guess
 def generate_feedback(current_guess, current_solution):
+    # print("Current Guess", current_guess, "Solution", current_solution)
     # using an array because strings are immutable in Python
     feedback = ["W"] * WORD_LENGTH
     # create a dictionary mapping letters to num_occurences for current_solution for words with multiple of the same letter
@@ -68,10 +69,10 @@ def filter_on_feedback(current_guesses, guess_feedback, VALID_GUESSES):
             if feedback[i] == "W":
                 if guess[i] in not_wrong_letters:
                     letter_not_in_position[i].add(guess[i])
-            else:
-                # propagate to all positions, since letter cannot be in word at all
-                for j in range(WORD_LENGTH):
-                    letter_not_in_position[j].add(guess[i])
+                else:
+                    # propagate to all positions, since letter cannot be in word at all
+                    for j in range(WORD_LENGTH):
+                        letter_not_in_position[j].add(guess[i])
 
     # now go through the list of guesses and append to filtered guesses if no letters in word at that position are in letter_not_in_position
     for word in VALID_GUESSES:

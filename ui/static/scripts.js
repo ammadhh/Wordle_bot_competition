@@ -4,6 +4,7 @@ const NUM_GUESSES = 6;
 
 let current_guesses = [];
 let guess_feedback = [];
+let current_possible_words = [];
 
 // current_solution_index is a random number corresponding to an index in the solution list in Flask
 let current_solution_index = 0;
@@ -30,6 +31,7 @@ function change_mode() {
 }
 
 function insert_letters() {
+    console.log("Insert Ran")
     for (let row = 0; row < current_guesses.length; ++row) {
         for (let col = 0; col < WORD_LENGTH; ++col) {
             let curr_letter = document.getElementById(row.toString() + col.toString());
@@ -46,6 +48,18 @@ function insert_letters() {
             curr_letter.textContent = current_guesses[row][col];
         }
     }
+}
+
+function updateRemainingList() {
+    const listElement = document.getElementById("remainingList");
+    // Clear the current list contents
+    listElement.innerHTML = '';
+    // Add each item in the 'remaining' array as a list item
+    current_possible_words.forEach(item => {
+        const listItem = document.createElement("li");
+        listItem.textContent = item;
+        listElement.appendChild(listItem);
+    });
 }
 
 function submit_user_input() {
@@ -73,6 +87,9 @@ function submit_user_input() {
                 // proper guess, so we can append it and the feedback to current_guesses and guess_feedback
                 current_guesses.push(guess);
                 guess_feedback.push(data.feedback);
+                current_possible_words = data.rem
+                updateRemainingList()
+                console.log(current_possible_words)
                 insert_letters();
                 if (guess_feedback[guess_feedback.length - 1] === "CCCCC") {
                     user_input.value = "CORRECTLY GUESSED";
@@ -80,6 +97,7 @@ function submit_user_input() {
             }
         })
         .catch((error) => console.log(error));
+    
 }
 
 async function simulate() {
@@ -110,13 +128,22 @@ async function simulate() {
                                                 return response.json();
                                             })
                                             .catch((error) => console.log(error));
-
-            current_guesses.push(guess);
+            // get list of all possible guesses
+            const { rem } = await fetch("/check_guess/?index=" + current_solution_index.toString() + "&guess=" + guess,
+                                             { credentials: "same-origin", method: "POST" })
+                                            .then((response) => {
+                                                if (!response.ok) throw Error(response.statusText);
+                                                return response.json();
+                                            })
+                                            .catch((error) => console.log(error));            current_guesses.push(guess);
             guess_feedback.push(feedback);
+            current_possible_words = rem
+            console.log(current_possible_words)
+            // current_possible_words = possible_words
             insert_letters();
-            
+            updateRemainingList()
             // currently delaying 2 seconds per iteration
-            //await new Promise(r => setTimeout(r, 2000));
+            await new Promise(r => setTimeout(r, 1000));
             
             if (guess_feedback[guess_feedback.length - 1] === "CCCCC") {
                 break;
