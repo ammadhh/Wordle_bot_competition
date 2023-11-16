@@ -61,9 +61,11 @@ function updateRemainingList() {
         listElement.appendChild(listItem);
     });
 }
+var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 function submit_user_input() {
     let user_input = document.getElementById("user-input");
+    socket.send("Guessed: " + user_input.value);    
     if (current_guesses.length >= NUM_GUESSES) {
         user_input.value = "MAX GUESSES REACHED";
         return;
@@ -97,7 +99,7 @@ function submit_user_input() {
             }
         })
         .catch((error) => console.log(error));
-    
+        // ADDITION UNKNOWN BELOW
 }
 
 async function simulate() {

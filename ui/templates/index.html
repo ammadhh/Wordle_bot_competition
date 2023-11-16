@@ -5,8 +5,9 @@
         <link rel="stylesheet" href="/static/styles.css">
         <script defer type="text/javascript" src="/static/scripts.js"></script>
     </head>
+
     <body>
-        <h1>Cracking Wordle as <a class="username-color"> {{ username }} </a></h1>
+        <h1>Cracking Wordle as <a class="username-color"> {{ username }} </a> <a href="/compete/"> <button> Join Competition</button></a></h1>
         <div class="mode">
             <!--This span is used as an argument when calling the API-->
             <h3>Current Mode: <span id="curr-mode">user
@@ -25,6 +26,8 @@
                     <option value="tfidf">tfidf</option>
                 </select>
                 <button onclick="change_mode()">Submit</button>
+                <!-- Assuming this is in your main page template -->
+
             </div>
         </div>
         <div class="container">
@@ -84,11 +87,12 @@
             <div class="side-container">
                 <!--contains the leaderboards of all the different players-->
                 <div id="user-stats">
-                    <h3>Game Statistics</h3>
+                    <h3>Game Statistics {{avg_win}} Average Guesses</h3>
                     <div id="user-list">
                         <!--Jinja templating-->
                         {% for user in users %}
                         <div class="user-stats-line" key="{{user.mode}}">
+                            <span class="user-rank">{{ loop.index }}.</span> <!-- This line adds the rank -->
                             <span class="username">{{user.Username}}</span>
                             <span class="user-win-rate">Win Rate: {{user.AvgGamesWon}}</span>
                             <span class="user-avg-guesses">Avg Guesses: {{user.AvgTotalGuesses}}</span>
@@ -125,6 +129,20 @@
                         <ul id="remainingList">
                         </ul>
                     </div>
+                </div>
+                <div class="chat-room-container">
+                    <head>
+                        <title>Chat Room</title>
+                        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='chat.css') }}">
+                    </head>
+                    <body>
+                        <div id="chat-box"></div>
+                        <input type="text" id="user-chat" placeholder="Type your message here...">
+                        <button onclick="sendMessage()">Send</button>
+                    
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+                        <script src="{{ url_for('static', filename='chat.js') }}"></script>
+                    </body>
                 </div>
             </div>
         </div>

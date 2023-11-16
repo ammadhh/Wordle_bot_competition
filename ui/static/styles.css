@@ -93,7 +93,7 @@ h1, .mode {
     background-color: #e9ecef; /* Light gray background */
 }
 
-.mode-stat, .username {
+.mode-stat, .username, .user-rank {
     font-weight: bold;
 }
 
@@ -157,4 +157,27 @@ h1, .mode {
 .logo {
     height: 50px; /* You can adjust this as needed */
     align-items: left;
+}
+/* static/chat.css */
+
+.chat-room-container {
+    width: 100%; /* Increase width */
+    height: 200px; /* Decrease height */
+    margin-top: 50px; /* Move it down */
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    overflow-y: auto; /* Allows scrolling if content exceeds height */
+}
+
+#chat-box {
+    height: 100%; /* Adjust height as needed */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+#user-input {
+    width: calc(100% - 60px); /* Adjust width as per the send button */
+    padding: 5px;
 }

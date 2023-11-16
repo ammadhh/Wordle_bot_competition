@@ -6,6 +6,7 @@ import pathlib
 import random
 from utility import *
 from algorithms import *
+from flask_socketio import SocketIO, send
 # from database import *
 
 # https://gist.github.com/cfreshman/d97dbe7004522f7bc52ed2a6e22e2c04
@@ -31,6 +32,23 @@ with open(SOLUTIONS_PATH, "r") as read_obj:
 # creates an app with this file's name as the name of the app
 app = flask.Flask(__name__)
 app.config['SECRET_KEY'] = "89bc36856e23cc74a027f9f538c8e6eb"
+
+
+# flask app socketIO
+socketio = SocketIO(app)
+
+@socketio.on('message')
+def handleMessage(msg):
+    print("Message is ", msg)
+    username = flask.session['username']
+    print('Message: ' + username + msg)
+    send(username + ": " + msg, broadcast=True)
+
+# END SOCKET FUNCTIONS
+@app.route("/compete/")
+def compete():
+    return flask.render_template('compete.html')
+#Competition API
 
 # Login Route
 
@@ -65,16 +83,21 @@ def index():
     avg_win = connection.execute(
         "SELECT SUM(win) FROM stats "
     )
+    numguess = connection.execute(
+        "SELECT SUM(num_guesses) FROM stats "
+    )
     #TODO : implement
     
 
-
+    # winrate = avg_win.fetchone()[0] / numguess.fetchone()[0]
+    winrate =  round(numguess.fetchone()["SUM(num_guesses)"] / avg_win.fetchone()["SUM(win)"],2)
+    print("Win Rate", winrate)
     # get stats from the db
     stats = {
         "modes": cursor.fetchall(),
         "users": stats_cursor.fetchall(),
         "username": flask.session['username'],
-        "avg_win": avg_win.fetchall()
+        "avg_win": winrate
     }
         # Sorting the list of dictionaries
     sorted_users = sorted(stats["users"], key=lambda x: x["AvgTotalGuesses"])
