@@ -4,6 +4,7 @@
 <div class="chat-room-container">
     <head>
         <title>Chat Room</title>
+        <script src="https://cdn.socket.io/socket.io-4.0.0.js"></script>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='chat.css') }}">
     </head>
     <body>
@@ -15,3 +16,105 @@
         <script src="{{ url_for('static', filename='chat.js') }}"></script>
     </body>
 </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wordle Game</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .main-container {
+            text-align: center;
+        }
+
+        #guesses {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            max-width: 300px;
+            margin: auto;
+        }
+
+        .letter {
+            width: 50px;
+            height: 50px;
+            border: 1px solid black;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 50px;
+            font-size: 30px;
+        }
+
+        .correct {
+            background-color: green;
+        }
+
+        .present {
+            background-color: yellow;
+        }
+
+        .absent {
+            background-color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-container">
+            <div id="game">
+                <div id="guesses">
+                    <!-- 6 rows x 5 columns for the guesses -->
+                    <!-- Each letter cell is identified by a unique ID -->
+                    <!-- Rows are automatically created by the grid layout -->
+                    <div id="guesses">
+                        <!-- 6 rows for 6 guesses, each row has 5 letter slots -->
+                        <div class="letter" id="00"></div>
+                        <div class="letter" id="01"></div>
+                        <div class="letter" id="02"></div>
+                        <div class="letter" id="03"></div>
+                        <div class="letter" id="04"></div>
+    
+                        <div class="letter" id="10"></div>
+                        <div class="letter" id="11"></div>
+                        <div class="letter" id="12"></div>
+                        <div class="letter" id="13"></div>
+                        <div class="letter" id="14"></div>
+    
+                        <div class="letter" id="20"></div>
+                        <div class="letter" id="21"></div>
+                        <div class="letter" id="22"></div>
+                        <div class="letter" id="23"></div>
+                        <div class="letter" id="24"></div>
+    
+                        <div class="letter" id="30"></div>
+                        <div class="letter" id="31"></div>
+                        <div class="letter" id="32"></div>
+                        <div class="letter" id="33"></div>
+                        <div class="letter" id="34"></div>
+    
+                        <div class="letter" id="40"></div>
+                        <div class="letter" id="41"></div>
+                        <div class="letter" id="42"></div>
+                        <div class="letter" id="43"></div>
+                        <div class="letter" id="44"></div>
+    
+                        <div class="letter" id="50"></div>
+                        <div class="letter" id="51"></div>
+                        <div class="letter" id="52"></div>
+                        <div class="letter" id="53"></div>
+                        <div class="letter" id="54"></div>
+                    </div>
+                    <!-- Fill in the rest of the letter cells with similar divs and unique IDs -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='wordle.js') }}"></script>
+</body>
+</html>

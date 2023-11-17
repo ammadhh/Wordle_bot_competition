@@ -6,7 +6,10 @@ import pathlib
 import random
 from utility import *
 from algorithms import *
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO, send, emit
+import time
+from datetime import datetime
+from threading import Thread, Event
 # from database import *
 
 # https://gist.github.com/cfreshman/d97dbe7004522f7bc52ed2a6e22e2c04
@@ -33,6 +36,7 @@ with open(SOLUTIONS_PATH, "r") as read_obj:
 app = flask.Flask(__name__)
 app.config['SECRET_KEY'] = "89bc36856e23cc74a027f9f538c8e6eb"
 
+players = {}
 
 # flask app socketIO
 socketio = SocketIO(app)
@@ -48,6 +52,64 @@ def handleMessage(msg):
 @app.route("/compete/")
 def compete():
     return flask.render_template('compete.html')
+
+### TESTING HERE
+game_state = {
+    'active': False,
+    'start_time': None,
+    'solution': None
+}
+
+timer_thread = None
+timer_event = Event()
+
+@socketio.on('start_game')
+def handle_start_game():
+    global timer_thread, timer_event
+    if timer_thread is None:
+        timer_event.clear()
+        timer_thread = Thread(target=game_timer, args=(120, timer_event))
+        timer_thread.start()
+
+def game_timer(duration, timer_event):
+    """ A function to handle the game timer countdown. """
+    time_left = duration
+    while time_left > 0 and not timer_event.is_set():
+        socketio.sleep(1)  # Delay for a second
+        time_left -= 1
+        socketio.emit('update_timer', {'time_left': time_left}, room=None)
+    if time_left == 0:
+        socketio.emit('game_over', broadcast=True)
+@app.route("/test_compete/")
+def test_compete():
+    name = {
+        "username": flask.session.get('username')
+    }
+    return flask.render_template('wordle_multiplayer.html',**name)
+@socketio.on('connect')
+def on_connect():
+    endpoint = flask.request.referrer
+    print(endpoint)
+    if 'test_compete' in endpoint:
+        player_id = flask.session.get('username')
+        players[player_id] = {'guesses': []}  # Store player info
+        emit('update_players', list(players.keys()), broadcast=True)
+    if game_state['active']:
+        start_time = game_state['start_time']
+        time_elapsed = (datetime.utcnow() - start_time).total_seconds()
+        time_left = max(120 - time_elapsed, 0)  # Assuming a 2-minute game
+        emit('game_state', {'time_left': time_left})
+@socketio.on('disconnect')
+def on_disconnect():
+    player_id = flask.session.get('username')
+    if player_id in players:
+        del players[player_id]
+    emit('update_players', list(players.keys()), broadcast=True)
+@socketio.on('submit_guess')
+def on_submit_guess(data):
+    # Handle guess submission
+    # Update players[session['player_id']]['guesses']
+    emit('update_game', players, broadcast=True)
 #Competition API
 
 # Login Route
@@ -191,7 +253,14 @@ def insert_stat():
 @app.route("/get_solution_index/", methods=["GET"])
 def get_solution_index():
     return flask.jsonify({"index": random.randint(0, len(VALID_SOLUTIONS) - 1)}), 200
-
+current_multiplayer_solution = None
+@app.route('/get_solution/', methods=['GET'])
+def get_solution():
+    global current_multiplayer_solution
+    if current_multiplayer_solution is None:
+        current_multiplayer_solution = VALID_SOLUTIONS[random.randint(0, len(VALID_SOLUTIONS) - 1)]  # Generate or set the solution word
+        print("Current Multiplayer SOlution", current_multiplayer_solution)
+    return flask.jsonify({'solution': current_multiplayer_solution})
 
 # Checks that a guess is valid and compares it to the solution word for feedback
 # if a guess is invalid, send back the data with the key feedback having value "INVALID"
@@ -245,7 +314,10 @@ def generate_guess():
 
     current_guesses = request_json["current_guesses"]
     guess_feedback = request_json["guess_feedback"]
+    print("got to this point 1")
     mode = request_json["mode"]
+    print("got to this point 2")
+
     if mode == "only_matched_patterns":
         if len(current_guesses) == 0:
             return flask.jsonify({"guess": "CRANE"}), 200
@@ -259,6 +331,10 @@ def generate_guess():
             return flask.jsonify({"guess": "CHARM"}), 200
 
         return flask.jsonify({"guess": letter_frequency(current_guesses, guess_feedback, filter_on_feedback(current_guesses, guess_feedback, VALID_GUESSES))}), 200
+    if mode == "entropy":
+        if len(current_guesses) == 0:
+            return flask.jsonify({"guess": "CRANE"}), 200
+        return flask.jsonify({"guess": only_matched_patterns(current_guesses, guess_feedback, VALID_SOLUTIONS)}), 200
 
 
 

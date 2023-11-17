@@ -36,13 +36,13 @@ function insert_letters() {
         for (let col = 0; col < WORD_LENGTH; ++col) {
             let curr_letter = document.getElementById(row.toString() + col.toString());
             if (guess_feedback[row][col] === "C") {
-                curr_letter.className = ("letter correct");
+                curr_letter.className = ("correct");
             }
             else if (guess_feedback[row][col] === "M") {
-                curr_letter.className = ("letter misplaced");
+                curr_letter.className = ("present");
             }
             else {
-                curr_letter.className = ("letter wrong");
+                curr_letter.className = ("absent");
             }
             
             curr_letter.textContent = current_guesses[row][col];

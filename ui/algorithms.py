@@ -2,6 +2,19 @@
 
 import random
 from utility import *
+# TESTING BELOW 
+# def calculate_entropies(words, valid_solutions, pattern_dict):
+#     """Calculate the entropy for every word in `words`, taking into account
+#     the remaining `possible_words`"""
+#     entropies = {}
+#     for word in words:
+#         counts = []
+#         for matches in pattern_dict[word].values():
+#             num_matches = len(matches.intersection(possible_words))
+#             counts.append(num_matches)
+#         entropies[word] = entropy(counts)
+#     return entropies
+# # TESTING HERE 
 
 # List which returns remaining possible Guesses
 def remaining_possible_guesses(current_guesses, guess_feedback, valid_solutions):
@@ -14,6 +27,7 @@ def remaining_possible_guesses(current_guesses, guess_feedback, valid_solutions)
         current_word_feedback = generate_feedback(current_guesses, word)
         if current_word_feedback == guess_feedback[-1]:
             remaining_solutions.append(word)
+
     return remaining_solutions
 
 # referred to as the brute force algorithm in week 2 slides

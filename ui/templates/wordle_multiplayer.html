@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Head content -->
+    <script type="text/javascript">
+        var username = "{{ session['username'] }}";
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function() {
+            console.log('Connected');
+        });
+
+        socket.on('update_players', function(player_ids) {
+            console.log('Received player update:', player_ids);
+            updatePlayersUI(player_ids);
+        });
+
+        function updatePlayersUI(player_ids) {
+            console.log('Updating players UI');
+            allboard.innerHTML = '';
+            player_ids.forEach(function(player_id, index) {
+                var playerDiv = document.createElement('div');
+                playerDiv.innerHTML = '<h3>Player ' + (player_id + 1) + '</h3>';
+                var boardDiv = document.createElement('div');
+                boardDiv.id = 'board-' + player_id;
+                boardDiv.className = 'game-board';
+
+                for (let i = 0; i < 6; i++) { // 6 rows
+                    for (let j = 0; j < 5; j++) { // 5 letters per row
+                        var cell = document.createElement('div');
+                        cell.className = 'letter';
+                        cell.id = player_id + '-' + i + j; // Unique ID for each cell
+                        boardDiv.appendChild(cell);
+                    }
+                }
+
+            playerDiv.appendChild(boardDiv);
+            allboard.appendChild(playerDiv);
+        });
+
+        }
+    </script>
+</head>
+<body>
+    <div id="players"></div>
+    <div id="allboard"></div>
+    <div id="timer"></div>
+    <button id="startButton">Start Game</button>
+
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function() {
+            console.log('Connected');
+        });
+
+        socket.on('update_game', function(players) {
+            updateGameUI(players);
+        });
+
+        function updateGameUI(players) {
+            var playersDiv = document.getElementById('players');
+            playersDiv.innerHTML = '';
+
+            players.forEach(function(player, index) {
+                var playerDiv = document.createElement('div');
+                playerDiv.id = 'player-' + index;
+                playerDiv.innerHTML = '<h3>Player ' + (index + 1) + '</h3>';
+
+                var gameBoard = document.createElement('div');
+                gameBoard.className = 'game-board';
+
+                for (let i = 0; i < 30; i++) {  // 6 rows x 5 letters
+                    var cell = document.createElement('div');
+                    cell.className = 'letter';
+                    gameBoard.appendChild(cell);
+                }
+
+                playerDiv.appendChild(gameBoard);
+                playersDiv.appendChild(playerDiv);
+            });
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='chat.js') }}"></script>
+    <script src="{{ url_for('static', filename='test-wordle.js') }}"></script>
+</body>
+</html>
