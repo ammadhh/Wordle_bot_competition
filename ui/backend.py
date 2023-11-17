@@ -43,9 +43,9 @@ socketio = SocketIO(app)
 
 @socketio.on('message')
 def handleMessage(msg):
-    print("Message is ", msg)
+    # print("Message is ", msg)
     username = flask.session['username']
-    print('Message: ' + username + msg)
+    # print('Message: ' + username + msg)
     send(username + ": " + msg, broadcast=True)
 
 # END SOCKET FUNCTIONS
@@ -89,7 +89,7 @@ def test_compete():
 @socketio.on('connect')
 def on_connect():
     endpoint = flask.request.referrer
-    print(endpoint)
+    # print(endpoint)
     if 'test_compete' in endpoint:
         player_id = flask.session.get('username')
         players[player_id] = {'guesses': []}  # Store player info
@@ -153,7 +153,7 @@ def index():
 
     # winrate = avg_win.fetchone()[0] / numguess.fetchone()[0]
     winrate =  round(numguess.fetchone()["SUM(num_guesses)"] / avg_win.fetchone()["SUM(win)"],2)
-    print("Win Rate", winrate)
+    # print("Win Rate", winrate)
     # get stats from the db
     stats = {
         "modes": cursor.fetchall(),
@@ -174,7 +174,7 @@ def index():
     for i in range(len(stats["users"])):
         stats["users"][i]["AvgGamesWon"] = str(round(stats["users"][i]["AvgGamesWon"], 2) * 100) + "%"
         stats["users"][i]["AvgTotalGuesses"] = round(stats["users"][i]["AvgTotalGuesses"], 2)
-    print(stats["users"])
+    # print(stats["users"])
     return flask.render_template("index.html", **stats), 200
 
 @app.route('/', methods=['GET', 'POST'])
@@ -203,13 +203,12 @@ def insert_stat():
     guess_num = flask.request.args.get("num_guesses", default=6, type=int)
 
     mode = flask.request.args.get("mode", default="user", type=str)
-    print(flask.session['username'])
+    # print(flask.session['username'])
     #TODO: User implement database and login etc information 
     # connection to the database
     connection = get_db()
-    print("Mode is", mode)
+    # print("Mode is", mode)
     if mode == "user":
-        print("SQL Query User")
                 # preventing sql injection attacks with ?
         connection.execute(
             "INSERT INTO user_stats(UserID, GamesWon, GamesPlayed, TotalGuesses) "
@@ -282,11 +281,6 @@ def check_guess():
         return flask.jsonify({"feedback": "INVALID"}), 200
     
     # useful to print to check against frontend
-    if not current_guess:
-        print("First Attempt")
-    else:
-        print("Current Guesses 1 is ", current_guess)
-    print("DEbug 1 is ", current_guess)
 
     print(VALID_SOLUTIONS[solution_index])
     remaining_list = []
@@ -314,10 +308,8 @@ def generate_guess():
 
     current_guesses = request_json["current_guesses"]
     guess_feedback = request_json["guess_feedback"]
-    print("got to this point 1")
     mode = request_json["mode"]
-    print("got to this point 2")
-
+    
     if mode == "only_matched_patterns":
         if len(current_guesses) == 0:
             return flask.jsonify({"guess": "CRANE"}), 200
