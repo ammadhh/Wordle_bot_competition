@@ -4,6 +4,22 @@
         <title>Cracking Wordle</title>
         <link rel="stylesheet" href="/static/styles.css">
         <script defer type="text/javascript" src="/static/scripts.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Essential for mobile responsiveness -->
+        <style>
+            /* Add custom styles for mobile devices */
+            @media screen and (max-width: 600px) {
+                .container, .main-container, .side-container {
+                    width: 100%;
+                    padding: 0;
+                    margin: 0;
+                }
+                .letter {
+                    width: 40px; /* Adjust size for better mobile view */
+                    height: 40px;
+                }
+                /* Other mobile-specific styles */
+            }
+        </style>
     </head>
 
     <body class="whole">
