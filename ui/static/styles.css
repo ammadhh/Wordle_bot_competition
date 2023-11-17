@@ -20,8 +20,15 @@ h1, .mode h3, .change-mode, .main-container, .side-container, #stats-container, 
     border: 2px solid #007bff; /* Bright blue border */
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
+    overflow: auto; /* Adds scroll if content overflows */
 
+}
+#user-list{
+    display: block;
+    flex-direction: column; /* Adjust as needed */
+    overflow: auto; /* Adds scroll if content overflows */
+
+}
 h1, .mode {
     padding: 10px 20px;
     text-align: center;
@@ -91,6 +98,8 @@ h1, .mode {
     height: 40%;
     text-align: center;
     background-color: #e9ecef; /* Light gray background */
+        /* padding: 10px 20px; */
+
 }
 
 .mode-stat, .username, .user-rank {
@@ -181,3 +190,98 @@ h1, .mode {
     width: calc(100% - 60px); /* Adjust width as per the send button */
     padding: 5px;
 }
+
+
+
+
+
+
+
+
+
+
+
+/* test */
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columns for letters */
+    grid-gap: 10px; /* Spacing between cells */
+    margin-bottom: 20px; /* Spacing between boards */
+    max-width: 300px; /* Adjust as needed */
+}
+
+.letter {
+    width: 50px; /* Width of each cell */
+    height: 50px; /* Height of each cell */
+    border: 1px solid #000; /* Border for cells */
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px; /* Vertically center the text */
+    font-size: 24px; /* Size of the letter */
+    background-color: #fff; /* Background color */
+    color: #000; /* Text color */
+}
+
+/* Additional styles for correct, present, and absent guesses */
+.correct {
+    width: 50px; /* Width of each cell */
+    height: 50px; /* Height of each cell */
+    border: 1px solid #000; /* Border for cells */
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px; /* Vertically center the text */
+    font-size: 24px; /* Size of the letter */
+    background-color: green;
+    color: white;
+}
+
+.present {
+    width: 50px; /* Width of each cell */
+    height: 50px; /* Height of each cell */
+    border: 1px solid #000; /* Border for cells */
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px; /* Vertically center the text */
+    font-size: 24px; /* Size of the letter */
+    background-color: yellow;
+    color: black;
+}
+
+.absent {
+    width: 50px; /* Width of each cell */
+    height: 50px; /* Height of each cell */
+    border: 1px solid #000; /* Border for cells */
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px; /* Vertically center the text */
+    font-size: 24px; /* Size of the letter */
+    background-color: grey;
+    color: white;
+}
+#timer {
+    position: fixed; /* Fixed position */
+    top: 20px; /* Positioned from the top of the viewport */
+    right: 20px; /* Positioned from the right of the viewport */
+    font-size: 40px; /* Large font size */
+    font-weight: bold; /* Bold font weight */
+    color: #000; /* Font color - change as needed */
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    padding: 10px; /* Padding around the text */
+    border-radius: 10px; /* Rounded corners */
+    z-index: 1000; /* Ensures the timer is above other elements */
+}
+@media screen and (min-width: 600px) {
+    .whole {
+        width: 80%;
+        margin: auto;
+    }
+}
+
+/* Styles for screens narrower than 600px (typically mobile devices) */
+@media screen and (max-width: 599px) {
+    .whole {
+        width: 100%;
+        padding: 0 10px;
+    }
+}
+/* end test */
