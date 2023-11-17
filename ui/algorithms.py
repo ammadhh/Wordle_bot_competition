@@ -21,7 +21,7 @@ def remaining_possible_guesses(current_guesses, guess_feedback, valid_solutions)
     remaining_solutions = []
     if(len(current_guesses) == 0):
         return None
-    print("Cur Guess", "Feedback", current_guesses, guess_feedback)
+    # print("Cur Guess", "Feedback", current_guesses, guess_feedback)
 
     for word in valid_solutions:
         current_word_feedback = generate_feedback(current_guesses, word)

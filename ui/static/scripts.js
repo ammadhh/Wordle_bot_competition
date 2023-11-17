@@ -61,11 +61,24 @@ function updateRemainingList() {
         listElement.appendChild(listItem);
     });
 }
-var socket = io.connect('http://' + document.domain + ':' + location.port);
+// var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 function submit_user_input() {
     let user_input = document.getElementById("user-input");
-    socket.send("Guessed: " + user_input.value);    
+    if (typeof io !== 'undefined') {
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+    
+        // Assuming you have other logic here...
+        socket.on('connect', function() {
+            socket.send("Guessed: " + user_input.value);
+        });
+    
+        // ... and possibly other event handlers
+    } else {
+        console.error("Socket.IO is not defined. Please check if the Socket.IO script is properly loaded.");
+        // Handle the case when Socket.IO is not available
+        // You might want to load the script dynamically or inform the user
+    }
     if (current_guesses.length >= NUM_GUESSES) {
         user_input.value = "MAX GUESSES REACHED";
         return;

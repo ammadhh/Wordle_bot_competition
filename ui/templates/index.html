@@ -135,14 +135,29 @@
                         <title>Chat Room</title>
                         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='chat.css') }}">
                     </head>
-                    <body>
-                        <!-- <div id="chat-box"></div>
+                    <!-- <body>
+                        <div id="chat-box"></div>
                         <input type="text" id="user-chat" placeholder="Type your message here...">
                         <button onclick="sendMessage()">Send</button>
                     
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
-                        <script src="{{ url_for('static', filename='chat.js') }}"></script> -->
+                        <script src="{{ url_for('static', filename='chat.js') }}"></script>
+                    </body> -->
+                    <div>
+                        <button id="join-chat-btn">Join Chat</button>
+                    </div>
+                    <body>
+                        <!-- Join Chat Button -->
+                    
+                        <!-- Chatbox, initially hidden -->
+                        <div id="chat-box" style="display: none;">
+                            <input type="text" id="user-chat" placeholder="Type your message here...">
+                            <button onclick="sendMessage()">Send</button>
+
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+                        <script src="{{ url_for('static', filename='chat.js') }}"></script>
                     </body>
+                    
                 </div>
             </div>
         </div>
