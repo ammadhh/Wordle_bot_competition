@@ -286,6 +286,13 @@ h1, .mode {
     }
 }
 
+@media only screen and (max-width: 767px) {
+    .container {
+        flex-direction: column;
+    }
+}
+
+
 /* Styles for screens narrower than 600px (typically mobile devices) */
 @media screen and (max-width: 599px) {
     .whole {
