@@ -90,10 +90,11 @@ def test_compete():
 def on_connect():
     endpoint = flask.request.referrer
     # print(endpoint)
-    if 'test_compete' in endpoint:
-        player_id = flask.session.get('username')
-        players[player_id] = {'guesses': []}  # Store player info
-        emit('update_players', list(players.keys()), broadcast=True)
+    if endpoint is not None:
+        if 'test_compete' in endpoint:
+            player_id = flask.session.get('username')
+            players[player_id] = {'guesses': []}  # Store player info
+            emit('update_players', list(players.keys()), broadcast=True)
     if game_state['active']:
         start_time = game_state['start_time']
         time_elapsed = (datetime.utcnow() - start_time).total_seconds()
@@ -309,7 +310,7 @@ def generate_guess():
     current_guesses = request_json["current_guesses"]
     guess_feedback = request_json["guess_feedback"]
     mode = request_json["mode"]
-    
+
     if mode == "only_matched_patterns":
         if len(current_guesses) == 0:
             return flask.jsonify({"guess": "CRANE"}), 200
