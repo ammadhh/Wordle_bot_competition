@@ -24,6 +24,11 @@ def get_db():
         flask.g.sqlite_db.execute("PRAGMA foreign_keys = ON")
     return flask.g.sqlite_db
 
+def get_db_connection():
+    conn = sqlite3.connect('db.sqlite3', check_same_thread=False)
+    conn.row_factory = sqlite3.Row
+    return conn
+
 def check_user_exists(username):
     conn = get_db()
     user = conn.execute('SELECT * FROM users WHERE Username = ?', (username,)).fetchone()

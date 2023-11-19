@@ -100,15 +100,15 @@ h1, .mode {
 }
 
 .letter {
-    border: 1px solid #dee2e6;
+    border: 1px solid black;
     width: 50px;
     height: 50px;
     display: inline-block;
     margin: 5px;
     text-align: center;
     line-height: 50px;
-    font-size: 30px;
-    color: #ffffff; /* Changed to white */
+    font-size: 50px;
+    color: white;
     grid-column: span 1;
     grid-row: span 1;
 }

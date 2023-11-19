@@ -301,3 +301,47 @@ h1, .mode {
     }
 }
 /* end test */
+
+
+
+
+
+#gameWonMessage {
+    display: none; /* Initially hidden */
+    position: fixed; /* Position it relative to the viewport */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust the positioning */
+    background-color: #fff; /* Background color */
+    padding: 20px; /* Padding around the content */
+    border: 2px solid #000; /* Border for visibility */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    z-index: 1000; /* Ensure it's on top of other elements */
+    text-align: center; /* Center the text inside */
+    width: 80%; /* Width of the message box */
+    max-width: 600px; /* Maximum width */
+}
+
+#gameWonMessage p {
+    font-size: 2.5em; /* Large font size */
+    font-weight: bold; /* Bold font */
+    color: #d32f2f; /* Font color */
+    margin-bottom: 20px; /* Space below the paragraph */
+}
+
+#gameWonMessage button {
+    font-size: 1.2em; /* Larger button text */
+    padding: 10px 20px; /* Padding inside the button */
+    background-color: #4CAF50; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* No border */
+    cursor: pointer; /* Cursor to indicate it's clickable */
+    border-radius: 5px; /* Rounded corners for the button */
+}
+
+/* Optionally, you can add a media query for smaller screens to adjust the font size */
+@media (max-width: 600px) {
+    #gameWonMessage p {
+        font-size: 2em; /* Slightly smaller font size on small screens */
+    }
+}

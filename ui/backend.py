@@ -111,6 +111,21 @@ def on_submit_guess(data):
     # Handle guess submission
     # Update players[session['player_id']]['guesses']
     emit('update_game', players, broadcast=True)
+
+@app.route('/submit_guess', methods=['POST'])
+def handle_guess():
+    data = flask.request.json
+    print(data)
+    guess = data['guess']
+    username = data['username']
+    solution = data['solution']  # Make sure the solution is available here
+
+
+    if guess.lower() == solution.lower():
+        socketio.emit('game_won', {'winner': username, 'word': solution}, room=None)
+        return flask.jsonify({'result': 'success', 'message': 'Correct guess'})
+
+    return flask.jsonify({'result': 'failure', 'message': 'Incorrect guess'})
 #Competition API
 
 # Login Route

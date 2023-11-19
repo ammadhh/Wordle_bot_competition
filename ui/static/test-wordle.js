@@ -45,6 +45,15 @@ socket.on('game_started', function(data) {
     timeLeft = Math.max(180 - timeElapsed, 0);
     startTimer();
 });
+socket.on('game_won', function(data) {
+    // Update the message
+    document.getElementById('winnerAnnouncement').textContent = `Game won by ${data.winner}! The correct word was: ${data.word}`;
+
+    // Show the game won message
+    document.getElementById('gameWonMessage').style.display = 'block';
+
+    // Here, you can also handle any additional UI changes, like disabling game input
+});
 
 document.getElementById('startButton').addEventListener('click', function() {
     socket.emit('start_game');
@@ -94,12 +103,45 @@ function submitGuess() {
         alert("Guess must be 5 letters!");
         return;
     }
+    const data = {
+        guess: currentGuess,
+        username: username,
+        solution: solution
+    };
+
+    // Send the data to the Flask server using fetch
+    fetch('/submit_guess', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        // Handle the response from the server
+        // ...
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 
     colorCodeGuess(currentGuess);
+        // Construct the data to send
 
     currentGuess = "";
     guessCount++;
-
+    
+    if (currentGuess.toLowerCase() === solution.toLowerCase()) {
+        socket.emit('submit_guess', { guess: currentGuess, username: username });
+        console.log("Confirmed Socket Answer Correct")
+    }
     if (guessCount === maxGuesses) {
         alert("Game over! The word was: " + solution);
         // Disable further input or reset the game

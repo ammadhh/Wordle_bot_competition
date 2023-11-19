@@ -51,6 +51,10 @@
     <div id="allboard"></div>
     <div id="timer"></div>
     <button id="startButton">Start Game</button>
+    <div id="gameWonMessage" style="display: none;">
+        <p id="winnerAnnouncement"></p>
+        <button onclick="window.location.reload();">Play Again</button>
+    </div>
 
     <script>
         var socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -87,7 +91,7 @@
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
-    <script src="{{ url_for('static', filename='chat.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='chat.js') }}"></script> -->
     <script src="{{ url_for('static', filename='test-wordle.js') }}"></script>
 </body>
 </html>
