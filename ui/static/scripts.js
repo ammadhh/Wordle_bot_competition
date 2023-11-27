@@ -140,6 +140,21 @@ function insert_letter() {
     }
 }
 
+function shakeWords(){
+        console.log("Inside Failure If Statmenet")
+        for (let i = 0; i < 5; i++) {
+            document.getElementById(`${current_guesses.length}${i}`).classList.add('always-shake');
+        }
+        // document.getElementById(`board-${username}`).classList.add('always-shake');
+        // Remove the class after the animation ends
+        setTimeout(function() {
+            // document.getElementById(`board-${username}`).classList.remove('always-shake');
+            for (let i = 0; i < 5; i++) {
+                document.getElementById(`${current_guesses.length}${i}`).classList.remove('always-shake');
+            }
+        }, 500);
+        return;
+}
 function updateRemainingList() {
     const listElement = document.getElementById("remainingList");
     // Clear the current list contents
@@ -187,6 +202,7 @@ function submit_user_input() {
         .then((data) => {
             if (data.feedback === "INVALID") {
                 user_input.value = data.feedback;
+                shakeWords()
             }
             else {
                 currentwordguess = 0
