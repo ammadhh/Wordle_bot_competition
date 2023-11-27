@@ -63,7 +63,7 @@ function colorCodeGuess(guess) {
         }
     }
 }
-function resetGame() {
-    // Reloads the current page
-    location.reload();
-}
+// function resetGame() {
+//     // Reloads the current page
+//     location.reload();
+// }

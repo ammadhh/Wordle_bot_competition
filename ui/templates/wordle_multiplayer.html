@@ -55,7 +55,7 @@
         <p id="winnerAnnouncement"></p>
         <button onclick="window.location.reload();">Play Again</button>
     </div>
-
+    <div id="input-container">
     <script>
         var socket = io.connect('http://' + document.domain + ':' + location.port);
 
@@ -90,6 +90,7 @@
             });
         }
     </script>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
     <!-- <script src="{{ url_for('static', filename='chat.js') }}"></script> -->
     <script src="{{ url_for('static', filename='test-wordle.js') }}"></script>

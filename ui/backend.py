@@ -124,6 +124,8 @@ def handle_guess():
     if guess.lower() == solution.lower():
         socketio.emit('game_won', {'winner': username, 'word': solution}, room=None)
         return flask.jsonify({'result': 'success', 'message': 'Correct guess'})
+    if not is_valid_guess(guess.lower(), VALID_GUESSES):
+        return flask.jsonify({'result': 'invalid', 'message': 'Invalid guess'})
 
     return flask.jsonify({'result': 'failure', 'message': 'Incorrect guess'})
 #Competition API

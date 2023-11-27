@@ -6,6 +6,11 @@ var timer;
 var timeLeft = 120; // 2 minutes in seconds
 
 window.onload = function() {
+    fetchSolution();
+};
+
+
+function fetchSolution() {
     fetch("/get_solution/", { credentials: "same-origin", method: "GET" })
         .then((response) => {
             if (!response.ok) throw Error(response.statusText);
@@ -16,7 +21,8 @@ window.onload = function() {
             // Additional logic to start the game with this solution
         })
         .catch((error) => console.log(error));
-};
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     var socket = io();
 
@@ -125,27 +131,58 @@ function submitGuess() {
     })
     .then(data => {
         console.log('Success:', data);
-        // Handle the response from the server
+        console.log('data is',data.result)
+        if(data.result == "invalid")
+        {
+            console.log("Inside Failure If Statmenet")
+            for (let i = 0; i < 5; i++) {
+                document.getElementById(`${username}-${guessCount}${i}`).classList.add('always-shake');
+            }
+            // document.getElementById(`board-${username}`).classList.add('always-shake');
+            // Remove the class after the animation ends
+            setTimeout(function() {
+                // document.getElementById(`board-${username}`).classList.remove('always-shake');
+                for (let i = 0; i < 5; i++) {
+                    document.getElementById(`${username}-${guessCount}${i}`).classList.remove('always-shake');
+                }
+            }, 500);
+            return;
+        }
+
+        // Handle the valid response from the server  
+        colorCodeGuess(currentGuess);
+        currentGuess = "";
+        guessCount++;
+        
+        if (currentGuess.toLowerCase() === solution.toLowerCase()) {
+            socket.emit('submit_guess', { guess: currentGuess, username: username });
+        }
+        if (guessCount === maxGuesses) {
+            alert("Game over! The word was: " + solution);
+            fetchSolution();
+            // Disable further input or reset the game
+        }
+        // Handle the response from the server  
         // ...
     })
     .catch((error) => {
         console.error('Error:', error);
     });
 
-    colorCodeGuess(currentGuess);
-        // Construct the data to send
+    // colorCodeGuess(currentGuess);
+    //     // Construct the data to send
 
-    currentGuess = "";
-    guessCount++;
+    // currentGuess = "";
+    // guessCount++;
     
-    if (currentGuess.toLowerCase() === solution.toLowerCase()) {
-        socket.emit('submit_guess', { guess: currentGuess, username: username });
-        console.log("Confirmed Socket Answer Correct")
-    }
-    if (guessCount === maxGuesses) {
-        alert("Game over! The word was: " + solution);
-        // Disable further input or reset the game
-    }
+    // if (currentGuess.toLowerCase() === solution.toLowerCase()) {
+    //     socket.emit('submit_guess', { guess: currentGuess, username: username });
+    //     console.log("Confirmed Socket Answer Correct")
+    // }
+    // if (guessCount === maxGuesses) {
+    //     alert("Game over! The word was: " + solution);
+    //     // Disable further input or reset the game
+    // }
 }
 
 function colorCodeGuess(guess) {

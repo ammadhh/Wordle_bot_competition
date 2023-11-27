@@ -8,8 +8,78 @@ let current_possible_words = [];
 
 // current_solution_index is a random number corresponding to an index in the solution list in Flask
 let current_solution_index = 0;
+let currentwordguess = 0
 
 reset_board();
+window.onload = function() {
+    const keyboardLayout = [
+        "QWERTYUIOP",
+        "ASDFGHJKL",
+        "ZXCVBNM"
+    ];
+
+    const keyboard = document.getElementById('keyboard');
+    keyboardLayout.forEach(row => {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'row';
+        
+        row.split('').forEach(letter => {
+            const button = document.createElement('button');
+            button.className = 'key';
+            button.textContent = letter;
+            button.addEventListener('click', () => {
+                // Implement logic for key press
+                if(currentwordguess < 5){
+                    let curr_letter = document.getElementById(current_guesses.length.toString() + currentwordguess.toString());
+                    curr_letter.textContent = letter
+                    currentwordguess += 1
+                    console.log(curr_letter)
+                    console.log("Letter pressed:", letter);
+                }
+            });
+            rowDiv.appendChild(button);
+        });
+
+        keyboard.appendChild(rowDiv);
+    });
+
+    // Adding special buttons
+    const submitButton = document.createElement('button');
+    submitButton.id = 'submit';
+    submitButton.className = 'large-key';
+    submitButton.textContent = 'Submit';
+    submitButton.addEventListener('click', () => {
+        // Implement logic for submit
+        let curr_letter = document.getElementById(current_guesses.length.toString() + (0).toString()).textContent;
+        let curr_letter1 = document.getElementById(current_guesses.length.toString() + (1).toString()).textContent;
+        let curr_letter2 = document.getElementById(current_guesses.length.toString() + (2).toString()).textContent;
+        let curr_letter3 = document.getElementById(current_guesses.length.toString() + (3).toString()).textContent;
+        let curr_letter4 = document.getElementById(current_guesses.length.toString() + (4).toString()).textContent;
+        let user_input = document.getElementById("user-input");
+        let guess = curr_letter + curr_letter1 + curr_letter2 + curr_letter3 + curr_letter4
+        user_input.value = guess
+        submit_user_input()
+
+        console.log("Submit pressed");
+    });
+    keyboard.appendChild(submitButton);
+
+    const deleteButton = document.createElement('button');
+    deleteButton.id = 'delete';
+    deleteButton.className = 'large-key';
+    deleteButton.textContent = 'Delete';
+    deleteButton.addEventListener('click', () => {
+        // Implement logic for delete
+        if(currentwordguess > 0){ 
+            let curr_letter = document.getElementById(current_guesses.length.toString() + (currentwordguess - 1).toString());
+            console.log(currentwordguess)
+            curr_letter.textContent = ""
+            currentwordguess -= 1
+        }
+        console.log("Delete pressed");
+    });
+    keyboard.appendChild(deleteButton);
+};
 
 function change_mode() {
     // change the text content of the current mode
@@ -32,6 +102,26 @@ function change_mode() {
 
 function insert_letters() {
     console.log("Insert Ran")
+    for (let row = 0; row < current_guesses.length; ++row) {
+        for (let col = 0; col < WORD_LENGTH; ++col) {
+            let curr_letter = document.getElementById(row.toString() + col.toString());
+            if (guess_feedback[row][col] === "C") {
+                curr_letter.className = ("correct");
+            }
+            else if (guess_feedback[row][col] === "M") {
+                curr_letter.className = ("present");
+            }
+            else {
+                curr_letter.className = ("absent");
+            }
+            
+            curr_letter.textContent = current_guesses[row][col];
+        }
+    }
+}
+
+function insert_letter() {
+    console.log("Insert Single Letter")
     for (let row = 0; row < current_guesses.length; ++row) {
         for (let col = 0; col < WORD_LENGTH; ++col) {
             let curr_letter = document.getElementById(row.toString() + col.toString());
@@ -99,6 +189,7 @@ function submit_user_input() {
                 user_input.value = data.feedback;
             }
             else {
+                currentwordguess = 0
                 // proper guess, so we can append it and the feedback to current_guesses and guess_feedback
                 current_guesses.push(guess);
                 guess_feedback.push(data.feedback);

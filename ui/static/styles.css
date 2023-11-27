@@ -345,3 +345,60 @@ h1, .mode {
         font-size: 2em; /* Slightly smaller font size on small screens */
     }
 }
+/* @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+} */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-50px); }
+    50% { transform: translateX(50px); }
+    75% { transform: translateX(-50px); }
+}
+.always-shake {
+    animation: shake 1s ease-in-out;
+}
+
+#allboard {
+    animation-duration: 5s;
+    animation-timing-function: ease-in-out;
+}
+
+.shake {
+    animation-name: shake;
+}
+
+
+#keyboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.key, .large-key {
+    padding: 10px 15px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.key:active, .large-key:active {
+    background-color: #bbb;
+}
+
+.large-key {
+    flex-grow: 1;
+}
