@@ -11,6 +11,63 @@ let current_solution_index = 0;
 let currentwordguess = 0
 
 reset_board();
+// document.addEventListener("keydown", function(event) {
+//     if (event.key === "Enter") {
+//         submitGuess();
+//     } else if (event.key === "Backspace") {
+//         deleteLastLetter();
+//     } else {
+//         const letter = event.key.toUpperCase();
+//         if (letter.length === 1 && letter >= 'A' && letter <= 'Z') {
+//             addLetter(letter);
+//         }
+//     }
+// });
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        submit_button_input();
+    }
+    else if (event.key === "Backspace") {
+        // TODO: cool to change the colors maybe as they update with sockets ? 
+        delete_letter();
+    }  else {
+        const letter = event.key.toUpperCase();
+        if (letter.length === 1 && letter >= 'A' && letter <= 'Z') {
+            add_letter(letter);
+        }
+    }
+});
+function add_letter(letter) {
+    if(currentwordguess < 5){
+        let curr_letter = document.getElementById(current_guesses.length.toString() + currentwordguess.toString());
+        // curr_letter.className('correct')
+        curr_letter.textContent = letter
+        currentwordguess += 1
+        console.log(curr_letter)
+        console.log("Letter pressed:", letter);
+    }
+}
+function delete_letter()
+{
+    if(currentwordguess > 0){ 
+        let curr_letter = document.getElementById(current_guesses.length.toString() + (currentwordguess - 1).toString());
+        console.log(currentwordguess)
+        curr_letter.textContent = ""
+        currentwordguess -= 1
+    }
+    console.log("Delete pressed");
+}
+function submit_button_input(){
+    let tempguess = "";
+    for (let row = 0; row < 5; ++row) {
+        let temp_letter = document.getElementById(current_guesses.length.toString() + row.toString()).textContent;
+        tempguess += temp_letter;
+    }
+    let user_input = document.getElementById("user-input");
+    user_input.value = tempguess
+    submit_user_input()
+}
 window.onload = function() {
     const keyboardLayout = [
         "QWERTYUIOP",
@@ -29,13 +86,7 @@ window.onload = function() {
             button.textContent = letter;
             button.addEventListener('click', () => {
                 // Implement logic for key press
-                if(currentwordguess < 5){
-                    let curr_letter = document.getElementById(current_guesses.length.toString() + currentwordguess.toString());
-                    curr_letter.textContent = letter
-                    currentwordguess += 1
-                    console.log(curr_letter)
-                    console.log("Letter pressed:", letter);
-                }
+                add_letter(letter)
             });
             rowDiv.appendChild(button);
         });
@@ -50,16 +101,16 @@ window.onload = function() {
     submitButton.textContent = 'Submit';
     submitButton.addEventListener('click', () => {
         // Implement logic for submit
-        let curr_letter = document.getElementById(current_guesses.length.toString() + (0).toString()).textContent;
-        let curr_letter1 = document.getElementById(current_guesses.length.toString() + (1).toString()).textContent;
-        let curr_letter2 = document.getElementById(current_guesses.length.toString() + (2).toString()).textContent;
-        let curr_letter3 = document.getElementById(current_guesses.length.toString() + (3).toString()).textContent;
-        let curr_letter4 = document.getElementById(current_guesses.length.toString() + (4).toString()).textContent;
-        let user_input = document.getElementById("user-input");
-        let guess = curr_letter + curr_letter1 + curr_letter2 + curr_letter3 + curr_letter4
-        user_input.value = guess
-        submit_user_input()
-
+        // let curr_letter = document.getElementById(current_guesses.length.toString() + (0).toString()).textContent;
+        // let curr_letter1 = document.getElementById(current_guesses.length.toString() + (1).toString()).textContent;
+        // let curr_letter2 = document.getElementById(current_guesses.length.toString() + (2).toString()).textContent;
+        // let curr_letter3 = document.getElementById(current_guesses.length.toString() + (3).toString()).textContent;
+        // let curr_letter4 = document.getElementById(current_guesses.length.toString() + (4).toString()).textContent;
+        // let user_input = document.getElementById("user-input");
+        // let guess = curr_letter + curr_letter1 + curr_letter2 + curr_letter3 + curr_letter4
+        // user_input.value = guess
+        // submit_user_input()
+        submit_button_input()
         console.log("Submit pressed");
     });
     keyboard.appendChild(submitButton);
@@ -70,13 +121,7 @@ window.onload = function() {
     deleteButton.textContent = 'Delete';
     deleteButton.addEventListener('click', () => {
         // Implement logic for delete
-        if(currentwordguess > 0){ 
-            let curr_letter = document.getElementById(current_guesses.length.toString() + (currentwordguess - 1).toString());
-            console.log(currentwordguess)
-            curr_letter.textContent = ""
-            currentwordguess -= 1
-        }
-        console.log("Delete pressed");
+        delete_letter()
     });
     keyboard.appendChild(deleteButton);
 };
@@ -105,6 +150,8 @@ function insert_letters() {
     for (let row = 0; row < current_guesses.length; ++row) {
         for (let col = 0; col < WORD_LENGTH; ++col) {
             let curr_letter = document.getElementById(row.toString() + col.toString());
+            // let curr_letter = document.getElementById #TODO: change color of used letters
+
             if (guess_feedback[row][col] === "C") {
                 curr_letter.className = ("correct");
             }

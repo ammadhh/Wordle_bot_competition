@@ -316,6 +316,8 @@ def return_possible(guess):
     return flask.jsonify(current_possibilties)
 
 
+# TODO: Contains CSS wordle colors on keyboard, 
+# TODO: not in word list - if invalid, etc 
 # generates the guess using the specified algorithm and data
 @app.route("/generate_guess/", methods=["POST"])
 def generate_guess():
