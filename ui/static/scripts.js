@@ -84,6 +84,7 @@ window.onload = function() {
             const button = document.createElement('button');
             button.className = 'key';
             button.textContent = letter;
+            button.setAttribute('data-letter', letter);
             button.addEventListener('click', () => {
                 // Implement logic for key press
                 add_letter(letter)
@@ -150,42 +151,48 @@ function insert_letters() {
     for (let row = 0; row < current_guesses.length; ++row) {
         for (let col = 0; col < WORD_LENGTH; ++col) {
             let curr_letter = document.getElementById(row.toString() + col.toString());
+            console.log("Current Letter is", curr_letter.textContent)
             // let curr_letter = document.getElementById #TODO: change color of used letters
+            let button = document.querySelector(`button[data-letter="${curr_letter.textContent}"]`);
 
             if (guess_feedback[row][col] === "C") {
                 curr_letter.className = ("correct");
+                button.classList.add("green");
+
             }
             else if (guess_feedback[row][col] === "M") {
                 curr_letter.className = ("present");
+                button.classList.add("red");
             }
             else {
                 curr_letter.className = ("absent");
+                button.classList.add("grey");
             }
             
             curr_letter.textContent = current_guesses[row][col];
         }
     }
 }
-
-function insert_letter() {
-    console.log("Insert Single Letter")
-    for (let row = 0; row < current_guesses.length; ++row) {
-        for (let col = 0; col < WORD_LENGTH; ++col) {
-            let curr_letter = document.getElementById(row.toString() + col.toString());
-            if (guess_feedback[row][col] === "C") {
-                curr_letter.className = ("correct");
-            }
-            else if (guess_feedback[row][col] === "M") {
-                curr_letter.className = ("present");
-            }
-            else {
-                curr_letter.className = ("absent");
-            }
+// TODO: Test if it works
+// function insert_letter() {
+//     console.log("Insert Single Letter")
+//     for (let row = 0; row < current_guesses.length; ++row) {
+//         for (let col = 0; col < WORD_LENGTH; ++col) {
+//             let curr_letter = document.getElementById(row.toString() + col.toString());
+//             if (guess_feedback[row][col] === "C") {
+//                 curr_letter.className = ("correct");
+//             }
+//             else if (guess_feedback[row][col] === "M") {
+//                 curr_letter.className = ("present");
+//             }
+//             else {
+//                 curr_letter.className = ("absent");
+//             }
             
-            curr_letter.textContent = current_guesses[row][col];
-        }
-    }
-}
+//             curr_letter.textContent = current_guesses[row][col];
+//         }
+//     }
+// }
 
 function shakeWords(){
         console.log("Inside Failure If Statmenet")

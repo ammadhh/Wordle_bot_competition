@@ -402,3 +402,13 @@ h1, .mode {
 .large-key {
     flex-grow: 1;
 }
+
+.green {
+    background-color: green;
+}
+.red{
+    background-color: yellow;
+}
+.grey{
+    background-color: grey;
+}
