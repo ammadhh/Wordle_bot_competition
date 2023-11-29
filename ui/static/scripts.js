@@ -154,19 +154,25 @@ function insert_letters() {
             console.log("Current Letter is", curr_letter.textContent)
             // let curr_letter = document.getElementById #TODO: change color of used letters
             let button = document.querySelector(`button[data-letter="${curr_letter.textContent}"]`);
+            let mode = document.getElementById("curr-mode").textContent;
 
             if (guess_feedback[row][col] === "C") {
                 curr_letter.className = ("correct");
-                button.classList.add("green");
-
+                if(mode === "USER"){
+                    button.classList.add("green");
+                }
             }
             else if (guess_feedback[row][col] === "M") {
                 curr_letter.className = ("present");
-                button.classList.add("red");
+                if(mode === "USER"){
+                    button.classList.add("red");
+                }
             }
             else {
                 curr_letter.className = ("absent");
-                button.classList.add("grey");
+                if(mode === "USER"){
+                    button.classList.add("grey");
+                }
             }
             
             curr_letter.textContent = current_guesses[row][col];
